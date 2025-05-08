@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personalized Nutrition Planner</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px 20px;
+      background: #fff;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #b22222;
+      font-size: 2.5em;
+    }
+
+    select, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #4b6cb7;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a539b;
+    }
+
+    .output {
+      background: #fff8f0;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      font-size: 1.2em;
+      text-align: left;
+      line-height: 1.8;
+    }
+
+    .meal-header {
+      color: #b22222;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .meal-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .meal-list li {
+      font-size: 1.3em;
+      margin-bottom: 15px;
+    }
+
+    canvas {
+      margin-top: 25px;
+    }
+
+    .back-link {
+      margin-top: 30px;
+    }
+
+    .back-link a {
+      color: #4b6cb7;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🍽️ Personalized Nutrition Planner</h1>
+
+    <select id="dietPref">
+      <option value="">Select Diet</option>
+      <option value="veg">Vegetarian</option>
+      <option value="nonveg">Non-Vegetarian</option>
+      <option value="vegan">Vegan</option>
+      <option value="egg">Eggitarian</option>
+      <option value="lowsodium">Low Sodium</option>
+    </select>
+
+    <button onclick="generatePlan()">Get Food Plan</button>
+
+    <div class="output" id="result"></div>
+
+    <canvas id="macroChart"></canvas>
+
+    <div class="back-link">
+      <a href="index.html">← Back to Why Nutrition Matters</a>
+    </div>
+  </div>
+
+  <script>
+    let chart;
+
+    function generatePlan() {
+      const diet = document.getElementById('dietPref').value;
+      let plan = "";
+      let macros = { protein: 0, fat: 0, carbs: 0, calories: 0 };
+
+      if (diet === "veg") {
+        plan = `<ul class="meal-list">
+                  <li>1) <span class="meal-header">Breakfast:</span> Oats with milk 🥣 and fruits 🍓</li>
+                  <li>2) <span class="meal-header">Lunch:</span> Paneer curry 🍛 with rice 🍚</li>
+                  <li>3) <span class="meal-header">Dinner:</span> Chapathi with dal 🍲</li>
+                </ul>
+                <strong>Total Calories: 1650 kcal</strong>`;
+        macros = { protein: 65, fat: 40, carbs: 190, calories: 1650 };
+      } else if (diet === "nonveg") {
+        plan = `<ul class="meal-list">
+                  <li>1) <span class="meal-header">Breakfast:</span> Oats and eggs 🍳</li>
+                  <li>2) <span class="meal-header">Lunch:</span> Chicken curry 🍛 with rice 🍚</li>
+                  <li>3) <span class="meal-header">Dinner:</span> Chapathi with chicken gravy 🍗</li>
+                </ul>
+                <strong>Total Calories: 1900 kcal</strong>`;
+        macros = { protein: 85, fat: 50, carbs: 180, calories: 1900 };
+      } else if (diet === "vegan") {
+        plan = `<ul class="meal-list">
+                  <li>1) <span class="meal-header">Breakfast:</span> Oats with almond milk 🥣 and fruits 🍇</li>
+                  <li>2) <span class="meal-header">Lunch:</span> Chickpea salad 🥗 and brown rice 🍚</li>
+                  <li>3) <span class="meal-header">Dinner:</span> Chapathi with tofu curry 🍛</li>
+                </ul>
+                <strong>Total Calories: 1700 kcal</strong>`;
+        macros = { protein: 60, fat: 35, carbs: 200, calories: 1700 };
+      } else if (diet === "egg") {
+        plan = `<ul class="meal-list">
+                  <li>1) <span class="meal-header">Breakfast:</span> Oats and boiled eggs 🍳</li>
+                  <li>2) <span class="meal-header">Lunch:</span> Egg curry 🍛 with rice 🍚</li>
+                  <li>3) <span class="meal-header">Dinner:</span> Chapathi with egg bhurji 🍳</li>
+                </ul>
+                <strong>Total Calories: 1800 kcal</strong>`;
+        macros = { protein: 75, fat: 45, carbs: 185, calories: 1800 };
+      } else if (diet === "lowsodium") {
+        plan = `<ul class="meal-list">
+                  <li>1) <span class="meal-header">Breakfast:</span> Plain oats 🥣 with apple 🍏</li>
+                  <li>2) <span class="meal-header">Lunch:</span> Grilled paneer 🍗 and quinoa 🍚</li>
+                  <li>3) <span class="meal-header">Dinner:</span> Chapathi with low-sodium dal 🍲</li>
+                </ul>
+                <strong>Total Calories: 1600 kcal</strong>`;
+        macros = { protein: 55, fat: 30, carbs: 195, calories: 1600 };
+      } else {
+        plan = "Select a diet to see the food plan.";
+        document.getElementById("result").innerText = plan;
+        if (chart) chart.destroy();
+        return;
+      }
+
+      document.getElementById("result").innerHTML = plan;
+
+      const ctx = document.getElementById('macroChart').getContext('2d');
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: [
+            `Protein: ${macros.protein}g`,
+            `Fat: ${macros.fat}g`,
+            `Carbs: ${macros.carbs}g`
+          ],
+          datasets: [{
+            data: [macros.protein, macros.fat, macros.carbs],
+            backgroundColor: ['#6a1b9a', '#f57c00', '#0288d1']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const total = macros.protein + macros.fat + macros.carbs;
+                  const value = context.raw;
+                  const percent = ((value / total) * 100).toFixed(1);
+                  return `${context.label} (${percent}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

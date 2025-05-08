@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Workout & Calorie Burn Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px 20px;
+      background: #fff;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #b22222;
+      font-size: 2em;
+    }
+
+    h2 {
+      color: #b22222;
+      font-size: 1.5em;
+    }
+
+    label, input, button {
+      display: block;
+      width: 100%;
+      margin: 15px 0;
+      font-size: 1em;
+    }
+
+    input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #4b6cb7;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a539b;
+    }
+
+    .result {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 1.2em;
+      text-align: left;
+      white-space: pre-line;
+    }
+
+    .dashboard {
+      margin-top: 40px;
+      background: #fff8f0;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .dashboard ul {
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🏋️‍♂️ Daily Exercise & Calorie Burn Guide</h1>
+    <label for="height">Enter your height (cm):</label>
+    <input type="number" id="height" placeholder="e.g., 170" />
+
+    <label for="weight">Enter your weight (kg):</label>
+    <input type="number" id="weight" placeholder="e.g., 70" />
+
+    <button onclick="calculateWorkout()">Get Your Daily Workouts</button>
+
+    <div class="result" id="workoutResult"></div>
+
+    <div class="dashboard">
+      <h2>💡 Calories Burned from Common Exercises</h2>
+      <ul>
+        <li>🏸 Badminton (1 hr): ~500 kcal</li>
+        <li>🚴‍♂️ Cycling (30 min): ~300 kcal</li>
+        <li>⚽ Football (30 min): ~350 kcal</li>
+        <li>🎣 Kayaking (30 min): ~300 kcal</li>
+        <li>⛳ Golf (30 min): ~200 kcal</li>
+        <li>🏃‍♂️ Running (30 min): ~400 kcal</li>
+        <li>🧘‍♂️ Yoga (30 min): ~150 kcal</li>
+        <li>🏋️‍♂️ Strength Training (30 min): ~300 kcal</li>
+        <li>🏃‍♀️ Walking (2 hrs): ~600 kcal</li>
+        <li>🕺 Zumba (30 min): ~350 kcal</li>
+        <li>🤸‍♂️ Jump Rope (30 min): ~400 kcal</li>
+        <li>💃 Dancing (30 min): ~250 kcal</li>
+        <li>🏊‍♂️ Swimming (30 min): ~350 kcal</li>
+        <li>🥊 Boxing (30 min): ~400 kcal</li>
+        <li>🚶‍♂️ Hiking (30 min): ~300 kcal</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function calculateWorkout() {
+      const height = parseFloat(document.getElementById('height').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const resultDiv = document.getElementById('workoutResult');
+
+      if (height > 0 && weight > 0) {
+        const bmr = 10 * weight + 6.25 * height - 5 * 30 + 5;
+        const calorieNeeds = Math.round(bmr * 1.5); // Moderate activity
+
+        const targetBurn = 2000;
+
+        const workouts = [
+          { name: "🏃‍♀️ Walking (2 hrs)", kcal: 600 },
+          { name: "🏸 Badminton (1 hr)", kcal: 500 },
+          { name: "🥊 Boxing (30 min)", kcal: 400 },
+          { name: "🤸‍♂️ Jump Rope (30 min)", kcal: 400 },
+          { name: "🏃‍♂️ Running (30 min)", kcal: 400 },
+          { name: "🏊‍♂️ Swimming (30 min)", kcal: 350 },
+          { name: "⚽ Football (30 min)", kcal: 350 },
+          { name: "🕺 Zumba (30 min)", kcal: 350 },
+          { name: "🎣 Kayaking (30 min)", kcal: 300 },
+          { name: "🏋️‍♂️ Strength Training (30 min)", kcal: 300 },
+          { name: "🚴‍♂️ Cycling (30 min)", kcal: 300 },
+          { name: "🚶‍♂️ Hiking (30 min)", kcal: 300 },
+          { name: "💃 Dancing (30 min)", kcal: 250 },
+          { name: "⛳ Golf (30 min)", kcal: 200 },
+          { name: "🧘‍♂️ Yoga (30 min)", kcal: 150 },
+        ];
+
+        let totalBurn = 0;
+        let selectedWorkouts = [];
+
+        for (let i = 0; i < workouts.length && totalBurn < targetBurn; i++) {
+          selectedWorkouts.push(workouts[i]);
+          totalBurn += workouts[i].kcal;
+        }
+
+        let workoutText = selectedWorkouts.map(w => `${w.name}: ~${w.kcal} kcal`).join("\n");
+
+        resultDiv.textContent =
+          `🔥 Estimated daily calorie needs (moderate activity): ${calorieNeeds} kcal\n\n` +
+          `💡 Recommended Workouts (To Burn ~2000 kcal):\n\n${workoutText}\n\n✅ Total Burn: ${totalBurn} kcal`;
+      } else {
+        resultDiv.textContent = "❗ Please enter valid height and weight.";
+      }
+    }
+  </script>
+</body>
+</html>

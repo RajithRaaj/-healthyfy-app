@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BMI Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px 20px;
+      background: #fff;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #b22222;
+    }
+
+    input, button {
+      padding: 12px;
+      margin: 10px;
+      width: 90%;
+      max-width: 300px;
+      font-size: 1em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #4b6cb7;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a539b;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .dashboard {
+      margin-top: 30px;
+      background: #fff8f0;
+      border-left: 6px solid #f57c00;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .emoji {
+      font-size: 1.5em;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📏 BMI Calculator</h1>
+    <p>Enter your height and weight to calculate your Body Mass Index.</p>
+
+    <input type="number" id="weight" placeholder="Weight in kg" />
+    <input type="number" id="height" placeholder="Height in cm" />
+    <br />
+    <button onclick="calculateBMI()">Calculate BMI</button>
+
+    <div class="result" id="bmiResult"></div>
+
+    <div class="dashboard">
+      <h3>📊 Health Dashboard</h3>
+      <ul>
+        <li>✅ BMI under 18.5 = Underweight</li>
+        <li>✅ BMI 18.5 – 24.9 = Normal</li>
+        <li>⚠️ BMI 25 – 29.9 = Overweight</li>
+        <li>🚨 BMI 30 or more = Obese</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function calculateBMI() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const height = parseFloat(document.getElementById("height").value) / 100;
+
+      if (!weight || !height) {
+        document.getElementById("bmiResult").innerText = "Please enter valid inputs.";
+        return;
+      }
+
+      const bmi = (weight / (height * height)).toFixed(2);
+      let status = "";
+
+      if (bmi < 18.5) status = "Underweight";
+      else if (bmi < 25) status = "Normal";
+      else if (bmi < 30) status = "Overweight";
+      else status = "Obese";
+
+      document.getElementById("bmiResult").innerText = `Your BMI is ${bmi} (${status})`;
+    }
+  </script>
+</body>
+</html>

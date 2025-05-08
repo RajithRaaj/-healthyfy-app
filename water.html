@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Water Intake Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px 20px;
+      background: #fff;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #b22222;
+      font-size: 2em;
+    }
+
+    label, input, button {
+      display: block;
+      width: 100%;
+      margin: 15px 0;
+      font-size: 1em;
+    }
+
+    input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #4b6cb7;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a539b;
+    }
+
+    .result {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .dashboard {
+      margin-top: 40px;
+      background: #fff8f0;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .dashboard h2 {
+      color: #b22222;
+      font-size: 1.3em;
+      margin-bottom: 10px;
+    }
+
+    .dashboard ul {
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💧 Daily Water Intake Calculator</h1>
+    <label for="weight">Enter your weight (kg):</label>
+    <input type="number" id="weight" placeholder="e.g., 65" />
+
+    <button onclick="calculateWater()">Calculate Water Intake</button>
+
+    <div class="result" id="waterResult"></div>
+
+    <!-- Dashboard block -->
+    <div class="dashboard">
+      <h2>💡 Hydration Dashboard</h2>
+      <ul>
+        <li>Adults should drink about <strong>30–35 ml per kg</strong> of body weight daily.</li>
+        <li>Hydration helps regulate <strong>body temperature, digestion</strong> and <strong>mental clarity</strong>.</li>
+        <li>Signs of dehydration include <strong>fatigue, dry skin, and dizziness</strong>.</li>
+        <li>💦 Tip: Carry a reusable water bottle to stay hydrated on the go.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function calculateWater() {
+      const weight = document.getElementById('weight').value;
+      const resultDiv = document.getElementById('waterResult');
+
+      if (weight && weight > 0) {
+        const waterLiters = (weight * 0.035).toFixed(2);
+        resultDiv.textContent = `You should drink approximately ${waterLiters} liters of water daily.`;
+      } else {
+        resultDiv.textContent = "Please enter a valid weight.";
+      }
+    }
+  </script>
+</body>
+</html>
